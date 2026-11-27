@@ -11,7 +11,7 @@
 // hits) + a surprising contrast (eaten in Paris since, still thinks about
 // the empanada). Two beats, short close — per winner-study.md: concrete
 // object, personal, worth remembering. No grandma, no wonton, no burrito.
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const line = "A lukewarm empanada from the laundromat vending machine at midnight, and I have eaten in Paris since, but I still think about that empanada.";
@@ -19,5 +19,8 @@ const line = "A lukewarm empanada from the laundromat vending machine at midnigh
 const outDir = process.env.MAKEFUN_OUTPUT_DIR || "/output";
 mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, "entry.txt"), line, "utf8");
+// Verify the write: read the file back and confirm it holds exactly the line.
+const back = readFileSync(join(outDir, "entry.txt"), "utf8");
+if (back !== line) throw new Error("entry.txt mismatch after write");
 console.log(line);
 console.log(`chars: ${[...line].length}`);
